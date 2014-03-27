@@ -1,0 +1,1 @@
+document.write(' <div style="position:absolute; top:5px; left:5:px;"> <a href = "index.php"><img src = "icon/home.png" width = 50px; ></a></div>');

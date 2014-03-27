@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+}
+
+@font-face{
+    src: url(Roboto-Regular.ttf);
+    font-family: Roboto;
+}
+
+html{
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-family: Roboto, 'Segoe UI', 'Helvetica';
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -31px;
+}
+
+.push{
+    height: 31px;
+}
+
+
+header{
+    height: 4px;
+    width: 100%;
+    background-color: #0094ff;
+    position: relative;
+    top: 0;
+}
+
+#pageHeading{
+    display: inline-table; 
+    position: relative;
+    font-size: 30px; 
+    color: #555555; 
+    font-family: 'Roboto Condensed Bold', 'Segoe UI';
+}
+
+#container{
+    border: 0px solid grey;
+    position: absolute;
+    margin: auto;
+    top: 0; right: 0; left: 0; bottom: 40px;
+    height: 100px;
+    width: 530px;
+}
+
+form{
+    background-color: #fff;
+    box-shadow: 0px 6px 10px grey;
+    border: 1px solid darkgrey;
+    padding: 15px;
+    height: 60px;
+    width: 320px;
+}
+
+#subBtn{
+    position: absolute;
+    left: 370px;
+    bottom: 0px;
+    height: 92px;
+    width: 40px;
+    border: 0;
+    font-size: 25px;
+    background-color: #0094ff;
+    box-shadow: 0 3px 8px grey;
+    transition:  0.3s all ease;
+    -webkit-transition: 0.3s all ease;
+    color: #fff;
+    }
+
+#subBtn:hover{
+    cursor: pointer;
+    box-shadow: 0px 6px 10px grey;
+}
+
+#subBtn:active{
+    box-shadow: 0px 0px 0px grey;
+}
+
+label{
+    font-family: 'Roboto', 'Segoe UI Semibold'; 
+    width: 160px;
+    display: inline-block;
+    margin: auto auto 10px 0;
+}
+
+.footer{
+    background-color: #f4f4f4;
+    border-top: 1px solid #808080; 
+    height: 30px;
+    color: #808080;
+    font-size: 12px;
+    text-align: center;
+}
