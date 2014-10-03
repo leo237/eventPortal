@@ -1,32 +1,17 @@
 <?php
     session_start();
     include ("lib/connection.php");
-    if (empty($_SESSION['dsw'])) 
+    if (empty($_SESSION['faculty'])) 
     {
         header("Location: index.php");
         exit();
     }
 
-    $mem = $_SESSION['dsw'];
-    $mem = mysqli_real_escape_string($mysqli, $mem);
-
-    $sqlQuery = "SELECT * FROM university WHERE id = '$mem' ";
-    $res = $mysqli->query($sqlQuery);
-
-    if (!$res)
-    {
-        echo $mysqli->error;
-    }
-
-    $count = $res->num_rows;
-    if ($count == 1)
-    {
-        $data=$res->fetch_array(); 
-        $image = $data['image'];                                            
-    }
+    $mem = $_SESSION['faculty'];
 
     if ($_SESSION['message'])
         $message = $_SESSION['message'];
+    $name = $_SESSION['name'];
     
                     
 ?>
@@ -41,7 +26,11 @@
     <body>
 
         <div class="wrapper">
-            <header></header>
+            <header>
+            </header>
+            <div style="position:absolute; top:10px; right:10px;"> 
+                <p> Hi, <?php echo $name; ?> <a href='changePassword.php'> <img src = "icon/setting.png" width = 19px; > </p>
+            </div>
             
             <div style = "text-align:center;">
                 <?php echo $message; 
@@ -53,7 +42,7 @@
             <div id="container"> 
                      
                 <div id="left">
-                    <img src="images/<?php echo $image; ?>.jpg" alt="." id="chapLogo">
+                    <img src="images/vit.jpg" alt="VIT University" id="chapLogo">
                       
                 </div>  
 

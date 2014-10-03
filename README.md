@@ -1,4 +1,0 @@
-eventPortal
-===========
-
-eventPortal for VIT

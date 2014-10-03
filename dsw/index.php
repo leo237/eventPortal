@@ -11,7 +11,11 @@
  if(!empty($_REQUEST['mode']))
     {
                     $user= $_REQUEST['id'];
+                    $user = mysqli_real_escape_string($mysqli, $user);
+
                     $tempPass= $_REQUEST['pw']; 
+                    $tempPass = mysqli_real_escape_string($mysqli, $tempPass);
+
                  // SHA Hashing to be done here. 
                  //   $pass = md5($tempPass);   
                     $sqlQuery = "SELECT * FROM university WHERE name = '$user' AND password = '$tempPass' ";
@@ -55,7 +59,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Events Portal</title>
+        <title>DSW Login</title>
         <link rel="stylesheet" type="text/css" href="styleSheet.css">
     </head>
     <body>
@@ -86,7 +90,7 @@
         </div>
 
         <div class="footer">
-            <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+            <p style="margin-top: 7px;"></p>
         </div>
     </body>
 </html>

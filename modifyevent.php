@@ -8,19 +8,33 @@ if (empty($_SESSION['memberId']))
 }
 
 
-$_SESSION['eventId'] = $_REQUEST['event'];
-$eventNumber = $_REQUEST['event'];
 
+$eventNumber = $_REQUEST['event'];
+$eventNumber = mysqli_real_escape_string($mysqli,$eventNumber);
+$_SESSION['eventId'] = $eventNumber;
 
 if(!empty($_REQUEST['mode']))
 {
     $mem = $_SESSION['memberId'];
+    $mem = mysqli_real_escape_string($mysqli,$mem);
+
     $title = $_REQUEST['title'];
+    $title = mysqli_real_escape_string($mysqli,$title);
+    
     $date = $_REQUEST['date'];
+    $date = mysqli_real_escape_string($mysqli,$date);
+    
     $from = $_REQUEST['from'];
+    $from = mysqli_real_escape_string($mysqli,$from);
+    
     $till = $_REQUEST['till'];
+    $till = mysqli_real_escape_string($mysqli,$till);
+    
     $location = $_REQUEST['location'];
+    $location =mysqli_real_escape_string ($mysqli,$location);
+    
     $desc = $_REQUEST['desc'];
+    $desc = mysqli_real_escape_string($mysqli,$desc);
 
     $sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
     $res = $mysqli->query($sql);
@@ -34,10 +48,10 @@ if(!empty($_REQUEST['mode']))
         
         $stat = $data['verificationStatus'];
         $posterName = $data['poster'];
-        $permissionName =$data['permission'];
+     //   $permissionName =$data['permission'];
     }
 
-    if ($stat == "rejected")
+    if ($stat == "rejected" || $stat == "rejectedMid")
     {
         $sql = "UPDATE event 
                 SET 
@@ -57,20 +71,19 @@ if(!empty($_REQUEST['mode']))
             } 
         }
 
-        if ( ($_FILES["permissionLetter"]["size"] < 2000000) )
-        {
-             if (!($_FILES["permissionLetter"]["error"]) )
-            {
-                move_uploaded_file($tmpName, "images/permissionLetters/".$permissionName);
-            } 
-        }
+        // if ( ($_FILES["permissionLetter"]["size"] < 2000000) )
+        // {
+        //      if (!($_FILES["permissionLetter"]["error"]) )
+        //     {
+        //         move_uploaded_file($tmpName, "images/permissionLetters/".$permissionName);
+        //     } 
+        // }
 
     }
-    else if ($stat == "yes")
+    else if ($stat == "yes" || $stat == "mid")
     {
         $sql = "UPDATE event 
                     SET 
-                        dat = '$date',
                         fromTime = '$from',
                         till = '$till',
                         location ='$location'
@@ -97,14 +110,14 @@ if(!empty($_REQUEST['mode']))
             } 
         }
 
-        $tmpName=$_FILES['permissionLetter']['tmp_name'];
-        if ( ($_FILES["permissionLetter"]["size"] < 2000000) )
-        {
-             if (!($_FILES["permissionLetter"]["error"]) )
-            {
-                move_uploaded_file($tmpName, "images/permissionLetters/".$permissionName);
-            } 
-        }
+        // $tmpName=$_FILES['permissionLetter']['tmp_name'];
+        // if ( ($_FILES["permissionLetter"]["size"] < 2000000) )
+        // {
+        //      if (!($_FILES["permissionLetter"]["error"]) )
+        //     {
+        //         move_uploaded_file($tmpName, "images/permissionLetters/".$permissionName);
+        //     } 
+        // }
     }
     $res = $mysqli->query($sql);
 
@@ -146,7 +159,7 @@ else
         $desc = $data['description']; 
         $stat = $data['verificationStatus']; 
         $poster = "images/posters/". $data['poster'];
-        $permission = "images/permissionLetters/". $data['permission'];                                        
+       // $permission = "images/permissionLetters/". $data['permission'];                                        
     }
     else if ($count == 0)
     {
@@ -165,6 +178,12 @@ else if ($stat == "pending")
 {
     $disable = "";
     $processStatus = " <p style=\"color:orange; text-align:center;\"><strong>Pending!</strong> </p>";
+
+}
+else if ($stat == "mid")
+{
+    $disable = "disabled";
+    $processStatus = " <p style=\"color:orange; text-align:center;\"><strong>Approved by faculty coordinator.</strong> </p>";
 
 }
 else if ($stat == "rejected") 
@@ -193,7 +212,7 @@ else if ($stat == "rejected")
     <body>
 
         <div class="wrapper">
-
+                        <script src="home.js"></script>
             <header></header>
 
             <div style="width: auto; margin: auto; overflow-y:scroll">
@@ -205,7 +224,7 @@ else if ($stat == "rejected")
 
                 <label class="formLabel">Title</label><br><input type="text" value = "<?php echo $title; ?>" name="title" id="eventTitle" style="margin-bottom: 10px;" required <?php echo $disable; ?>><br>
                 
-                <label class="formLabel">Date:</label><input type="text" value = "<?php echo $date; ?>" style="width: 112px; margin: 10px 18px 10px auto;" id="date" name="date" placeholder="Click to add" required>
+                <label class="formLabel">Date:</label><input type="text" value = "<?php echo $date; ?>" style="width: 112px; margin: 10px 18px 10px auto;" id="date" name="date" placeholder="Click to add" required <?php echo $disable; ?> >
 
                 <label class="formLabel">From:</label><input type="text" value= "<?php echo $from; ?>" id="from" placeholder="HH:MM" pattern="[0-2][0-9]:[0-5][0-9]" title="Standard 24 hour clock" name="from" style="margin-right: 18px; width: 100px;" required>
 
@@ -220,18 +239,18 @@ else if ($stat == "rejected")
                     <a href="<?php echo $poster;?>">
                         <img src="<?php echo $poster; ?>" width=590px >
                     </a>
-                <label class="formLabel1" style="margin-top: 5px;"> Change </label>
+                <label class="formLabel1" text-align:"center" style="margin-top: 5px;"> Change </label>
                 <input type="file" onchange="validation(this.value)" id="poster"  style="font-size: 12px;" name="poster" <?php echo $disable;?> ><br><br>
 
 
                 </br>
-                    <label class="formLabel1" style="margin-top: 5px;"> Permission Letter</label>
+               <!--      <label class="formLabel1" style="margin-top: 5px;"> Permission Letter</label>
                     <a href="<?php echo $permission;?>">
                         <img src="<?php echo $permission; ?>" width=590px style= >
                 </a>
                  <label class="formLabel1" style="margin-top: 5px;">Change</label>
                 <input type="file" onchange="validation(this.value)" id="permissionLetter"  style="font-size: 12px;" name="permissionLetter" <?php echo $disable; ?>><br><br>
-
+ -->
 
                 <input type="hidden" name ="event" value="<?php echo $eventNumber;?>"  >
                 <p style="text-align:center;"> Screening Process</p> <?php echo $processStatus;?>
@@ -249,7 +268,7 @@ else if ($stat == "rejected")
         <div class="push"></div></div>
 
         <div class="footer">
-            <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+            <p style="margin-top: 7px;"></p>
         </div>
     
         <script>

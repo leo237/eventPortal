@@ -9,6 +9,7 @@
     }
 
     $mem = $_SESSION['memberId'];
+    $mem = mysqli_real_escape_string($mysqli, $mem);
     
     $sql = "SELECT * FROM event WHERE memberId = '$mem' ";
 
@@ -63,7 +64,7 @@
         <div class="push"></div></div>
 
         <div class="footer">
-             <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+             <p style="margin-top: 7px;"></p>
         </div>
 
     </body>

@@ -10,6 +10,7 @@
     }
 	
 	$eventNumber = $_SESSION['eventId'];
+	$eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
 
 	$sql = "DELETE FROM event WHERE eventId = '$eventNumber' ";
 	$res = $mysqli->query($sql);

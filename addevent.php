@@ -11,15 +11,26 @@ if(!empty($_REQUEST['mode']))
 {
     $mem = $_SESSION['memberId'];
     $title = $_REQUEST['title'];
+    $title = mysqli_real_escape_string($mysqli,$title);
+
     $date = $_REQUEST['date'];
+    $date = mysqli_real_escape_string($mysqli,$date);
+    
     $from = $_REQUEST['from'];
+    $from = mysqli_real_escape_string($mysqli,$from);
+    
     $till = $_REQUEST['till'];
+    $till = mysqli_real_escape_string($mysqli,$till);
+    
     $location = $_REQUEST['location'];
+    $location = mysqli_real_escape_string($mysqli,$location);
+    
     $desc = $_REQUEST['desc'];
+    $desc = mysqli_real_escape_string($mysqli,$desc);
 
     $tmpName=$_FILES['poster']['tmp_name'];
    
-    if ( ($_FILES["poster"]["size"] < 2000000) )
+    if ( ($_FILES["poster"]["size"] < 4000000) )
     {
         if (!($_FILES["poster"]["error"]) )
         {
@@ -32,18 +43,18 @@ if(!empty($_REQUEST['mode']))
         } 
     }
 
-     if ( ($_FILES["permissionLetter"]["size"] < 2000000) )
-    {
-        if (!($_FILES["permissionLetter"]["error"]) )
-        {
-            $titShort= explode(" ",trim($title) );
-            $titl = (string)$titShort[0];
-            $permissionLetterName = $mem.$titl.rand(1,99999).".".end(explode(".",$_FILES["permissionLetter"]["name"]) );
-            $tmpName=$_FILES['permissionLetter']['tmp_name'];
+    //  if ( ($_FILES["permissionLetter"]["size"] < 4000000) )
+    // {
+    //     if (!($_FILES["permissionLetter"]["error"]) )
+    //     {
+    //         $titShort= explode(" ",trim($title) );
+    //         $titl = (string)$titShort[0];
+    //         $permissionLetterName = $mem.$titl.rand(1,99999).".".end(explode(".",$_FILES["permissionLetter"]["name"]) );
+    //         $tmpName=$_FILES['permissionLetter']['tmp_name'];
             
-            move_uploaded_file($tmpName, "images/permissionLetters/".$permissionLetterName);
-        } 
-    }
+    //         move_uploaded_file($tmpName, "images/permissionLetters/".$permissionLetterName);
+    //     } 
+    // }
 
     
    
@@ -56,8 +67,8 @@ if(!empty($_REQUEST['mode']))
                     till = '$till',
                     location ='$location',
                     description = '$desc',
-                    poster = '$posterName',
-                    permission = '$permissionLetterName' " ; 
+                    poster = '$posterName'";
+   //                 permission = '$permissionLetterName' " ; 
     
     $res = $mysqli->query($sql);
 
@@ -121,8 +132,8 @@ if(!empty($_REQUEST['mode']))
                 <label class="formLabel1" style="margin-top: 5px;">Poster</label>
                 <input type="file" onchange="validation(this.value)" id="poster"  style="font-size: 12px;" name="poster" required><br><br>
 
-                <label class="formLabel1" style="margin-top: 5px;">Permission Letter</label>
-                <input type="file" onchange="validation(this.value)" id="permissionLetter"  style="font-size: 12px;" name="permissionLetter" required><br>
+                <!-- <label class="formLabel1" style="margin-top: 5px;">Permission Letter</label>
+                <input type="file" onchange="validation(this.value)" id="permissionLetter"  style="font-size: 12px;" name="permissionLetter" required><br> -->
                 <div style="text-align:center;" >
                     <input type="submit" id="subBtn" value="Create Event">
                 </div>
@@ -131,7 +142,7 @@ if(!empty($_REQUEST['mode']))
         <div class="push"></div></div>
 
         <div class="footer">
-            <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+            <p style="margin-top: 7px;"></p>
         </div>
     
         <script>

@@ -1,11 +1,12 @@
 <?php
 session_start();
 include("lib/connection.php"); 
-if (empty($_SESSION['dsw']))
+if (empty($_SESSION['faculty']))
 {
     header("Location: index.php");
     exit();
 }
+
 
 $eventNumber = $_REQUEST['event'];
 $eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
@@ -32,22 +33,10 @@ if ($count == 1)
     $location = $data['location'];
     $desc = $data['description'];  
     $stat = $data['verificationStatus'];   
-    $faculty = $data['approvedBy']; 
 
     $date = date("d-m-Y", strtotime($originalDate));
     $poster = "../images/posters/". $data['poster'];
-
-     $findFacultyName = "SELECT name FROM faculty WHERE id = '$faculty' ";
-    $findingFacultyName = $mysqli->query($findFacultyName);
-
-    $countFaculty = $findingFacultyName->num_rows;
-    if ($countFaculty == 1)
-    {
-        $dataFaculty = $findingFacultyName->fetch_array();
-        $facultyName = $dataFaculty[0];
-    }
-    else
-        $facultyName = "Faculty Coordinator.";
+       
                                      
 
     // echo "Title : $title </br>";
@@ -140,33 +129,7 @@ else if ($stat == "rejected")
 
             <script src="home.js"></script>
             
-            <!-- <div style=" height: 265px; width: 532px; margin: auto; left: 0; right: 0; top: 40px; bottom: 0px;">
-                <form action='screenevent.php' method='POST'>
-                <h2><?php echo $title;?></h2>
-                <div style="border: 1px solid #b2b0b0; box-shadow: 0 0 10px darkgrey; padding: 10px; height: 280px; width: 510px; text-align:center;">
-                    <div style="float: left; margin-right: 20px; margin-top:20px; text-align:center; width: 140px;">
-                        <h4 style="color:black;"> <i><u>Date</u></i></h4>
-                        <h4><?php echo $date; ?></h4>
-                        <h4 style="color:black;"> <i><u>Time</u></i></h4>
-                        <h4 style="display: inline-block;"><?php echo $from; ?></h4>
-                        <h5 style="display: inline-block; margin: 0 3px; font-size: 18px;">-</h5>
-                        <h4 style="display: inline-block;"><?php echo $till; ?></h4>
-                        <h4 style="color:black;"> <i><u>Place</u></i></h4>
-                        <h4><?php echo $location; ?></h4>
-                    </div>
-                    <div style="float: left; border: 1px solid darkgrey; width: 338px; height: 238px; overflow-y: scroll; padding: 5px; ">
-                        <p><?php echo $desc; ?></p>
-
-                    </div>
-                </div>
-                <input type="hidden" name="event" value="<?php echo $eventNumber;?>" >
-
-                <input type="submit" name="verify" value="Change Status" id="subBtn">
-                </form>
-            </div>
-        
-        </div> -->
-        <div style=" height: auto; width: 600px; margin: auto; left: 0; right: 0; top: 40px; bottom: 0px;">
+            <div style=" height: auto; width: 600px; margin: auto; left: 0; right: 0; top: 40px; bottom: 0px;">
                 <form action='screenevent.php' method='POST'>
                 <h2><?php echo $title;?></h2>
                 <div style="border: 1px solid #b2b0b0; box-shadow: 0 0 10px darkgrey; padding: 10px; height: auto; width: 600px; text-align:center;">
@@ -191,10 +154,9 @@ else if ($stat == "rejected")
                         <img src="<?php echo $poster; ?>" width=550px style= >
                     </a>
                 </br>
-                <h8 style = "color:green;"> Verified by <?php echo $facultyName; ?> </h8>
                     <!-- <label> Permission Letter</label>
-                    <a href="">
-                        <img src=""width=550px style= >
+                    <a href="<?php echo $permission;?>">
+                        <img src="<?php echo $permission; ?>" width=550px style= >
                     </a> -->
                     <div>
                         

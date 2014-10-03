@@ -10,7 +10,7 @@ if (empty($_SESSION['memberId']))
 
 $_SESSION['eventId'] = $_REQUEST['event'];
 $eventNumber = $_REQUEST['event'];
-
+$eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
 
 $sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
 $res = $mysqli->query($sql);

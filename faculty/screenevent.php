@@ -1,87 +1,75 @@
 <?php
-session_start();
-include("lib/connection.php"); 
-if (empty($_SESSION['dsw']))
-{
-    header("Location: index.php");
-    exit();
-}
-
-
-$eventNumber = $_REQUEST['event'];
-$eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
-
-$_SESSION['eventId'] = $eventNumber;
-
-
-$sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
-$res = $mysqli->query($sql);
-
-$count = $res->num_rows;
-
-if ($count == 1)
-{
-    $data=$res->fetch_array(); 
-
-    $title = $data['title'];
-
-
-
-    $originalDate = $data['dat'];
-    $from = $data['fromTime'];
-    $till = $data['till'];
-    $location = $data['location'];
-    $desc = $data['description'];  
-    $stat = $data['verificationStatus']; 
-    $faculty = $data['approvedBy'];  
-
-    $date = date("d-m-Y", strtotime($originalDate));
-    $poster = "../images/posters/". $data['poster'];
-
-    $findFacultyName = "SELECT name FROM faculty WHERE id = '$faculty' ";
-    $findingFacultyName = $mysqli->query($findFacultyName);
-
-    $countFaculty = $findingFacultyName->num_rows;
-    if ($countFaculty == 1)
+    session_start();
+    include("lib/connection.php"); 
+    if (empty($_SESSION['faculty']))
     {
-        $dataFaculty = $findingFacultyName->fetch_array();
-        $facultyName = $dataFaculty[0];
+        header("Location: index.php");
+        exit();
     }
-    else
-        $facultyName = "Faculty Coordinator.";
-    //$permission = "../images/permissionLetters/". $data['permission'];
-                                     
 
-    // echo "Title : $title </br>";
-    // echo "Date : $date </br>";
-    // echo "From : $from</br>";
-    // echo "till : $till </br>";
-    // echo "location : $location </br>";
-    // echo "description : $desc </br>";
-    // echo "Verification : $stat";
 
-}
-else if ($count == 0)
-{
-    $message = "There was no event to screen.";
-    $_SESSION['message'] = $message;
-    header("Location: landing.php");
-}
+    $eventNumber = $_REQUEST['event'];
+    $eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
 
-if ($stat == "yes")
-{
-    $processStatus = " <h8 style=\"color:green; text-align:center; margin-top:10px;\"><strong>Approved!</strong> </h8>";
-}
-else if ($stat == "pending")
-{
-    $processStatus = " <h8 style=\"color:orange; text-align:center; margin-top:10px;\"><strong>Pending!</strong> </h8>";
+    $_SESSION['eventId'] = $eventNumber;
 
-}
-else if ($stat == "rejected") 
-{
-    $processStatus = " <h8 style=\"color:red; text-align:center; margin-top:10px;\"><strong>Rejected!</strong> </h8>";
-   
-}   
+    //echo $evenNumber;
+    $sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
+    $res = $mysqli->query($sql);
+
+    $count = $res->num_rows;
+
+    if ($count == 1)
+    {
+        $data=$res->fetch_array(); 
+
+        $title = $data['title'];
+
+
+
+        $originalDate = $data['dat'];
+        $from = $data['fromTime'];
+        $till = $data['till'];
+        $location = $data['location'];
+        $desc = $data['description'];  
+        $stat = $data['verificationStatus'];   
+
+        $date = date("d-m-Y", strtotime($originalDate));
+        $poster = "../images/posters/". $data['poster'];
+        //$permission = "../images/permissionLetters/". $data['permission'];
+                                         
+
+        // "Title : $title </br>";
+        // echo "Date : $date </br>";
+        // echo "From : $from</br>";
+        // echo "till : $till </br>";
+        // echo "location : $location </br>";
+        // echo "description : $desc </br>";
+        // echo "Verification : $stat";
+
+    }
+    else if ($count == 0)
+    {
+        echo "LOL!";
+        $message = "There was no event to screen.";
+        $_SESSION['message'] = $message;
+        header("Location: landing.php");
+    }
+
+    if ($stat == "yes")
+    {
+        $processStatus = " <h8 style=\"color:green; text-align:center; margin-top:10px;\"><strong>Approved!</strong> </h8>";
+    }
+    else if ($stat == "pending")
+    {
+        $processStatus = " <h8 style=\"color:orange; text-align:center; margin-top:10px;\"><strong>Pending!</strong> </h8>";
+
+    }
+    else if ($stat == "rejected") 
+    {
+        $processStatus = " <h8 style=\"color:red; text-align:center; margin-top:10px;\"><strong>Rejected!</strong> </h8>";
+       
+    }   
 
 ?>
 
@@ -160,12 +148,12 @@ else if ($stat == "rejected")
 
                     </div>
                     </br></br> </br> </br>
-                    <label> Poster </label> <br>
+                    <label> Poster </label>
+                    <br>
                     <a href="<?php echo $poster;?>">
                         <img src="<?php echo $poster; ?>" width=550px style= >
                     </a>
                 </br>
-                    <h8 style = "color:green;"> Verified by <?php echo $facultyName; ?> </h8>
                     <!-- <label> Permission Letter</label>
                     <a href="<?php echo $permission;?>">
                         <img src="<?php echo $permission; ?>" width=550px style= >
@@ -174,10 +162,7 @@ else if ($stat == "rejected")
                         
                     </div>       
                 </div>
-                <div style = "text-align:center;">
-
-                    <label> Comments </label>
-                    <input type="text" name = "comments" style = "margin-top:20px; margin-bottom:20px;"> 
+                <div style = "text-align:center;"> 
                 </div>
                 <input type="hidden" name="eventid" value="<?php echo $eventNumber;?>" >
                 <input type="submit" name="verify" value="Yes" id="delBtn" style = "background-color:green;">

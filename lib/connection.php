@@ -7,10 +7,15 @@
 
     //define( "DB_DATABASE",  $_ENV['OPENSHIFT_APP_NAME'] );
 
-  $hostname = "localhost";
-  $dbusername = "root";
-  $dbname  = "vita";
-  $dbpassword = "";
+  // $hostname = "127.7.193.2";
+  // $dbusername = "adminppanIGT";
+  // $dbname  = "vita";
+  // $dbpassword = "ryqux6mbdJ9A";
+
+$hostname = "localhost";
+$dbusername = "root";
+$dbname = "vita";
+$dbpassword = "";
   $mysqli = new mysqli($hostname, $dbusername, $dbpassword, $dbname);
   if (mysqli_connect_errno())
   {

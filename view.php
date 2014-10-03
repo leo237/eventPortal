@@ -7,9 +7,11 @@ if (empty($_SESSION['memberId']))
     exit();
 }
 
+$eventNumber = $_REQUEST['event'];
+$eventNumber = mysqli_real_escape_string($mysqli,$eventNumber);
 
 $_SESSION['eventId'] = $_REQUEST['event'];
-$eventNumber = $_REQUEST['event'];
+
 
 
 $sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
@@ -32,7 +34,8 @@ if ($count == 1)
     $desc = $data['description'];  
     $stat = $data['verificationStatus'];   
     $poster = "images/posters/" . $data['poster'];
-    $permission = "images/permissionLetters/" . $data['permission'];
+    //$permission = "images/permissionLetters/" . $data['permission'];
+    $comments = $data['comments'];
 
     $date = date("d-m-Y", strtotime($originalDate));
                                      
@@ -62,11 +65,21 @@ else if ($stat == "pending")
     $processStatus = " <h8 style=\"color:orange; text-align:center; margin-top:10px;\"><strong>Pending!</strong> </h8>";
 
 }
+else if ($stat == "mid")
+{
+    $processStatus = " <h8 style=\"color:orange; text-align:center; margin-top:10px;\"><strong>Approved by Faculty Coordinator!</strong> </h8>";
+
+}
 else if ($stat == "rejected") 
 {
     $processStatus = " <h8 style=\"color:red; text-align:center; margin-top:10px;\"><strong>Rejected!</strong> </h8>";
    
-}   
+} 
+else if ($stat == "rejectedMid") 
+{
+    $processStatus = " <h8 style=\"color:red; text-align:center; margin-top:10px;\"><strong>Rejected by Faculty Coordinator!</strong> </h8>";
+   
+}  
 
 ?>
 
@@ -145,23 +158,31 @@ else if ($stat == "rejected")
 
                     </div>
                     </br></br> </br> </br>
-                    <label style="margin-top:20px;"> Poster </label>
+                    <label style="margin-top:20px;"><i> <u>Poster</i></u> </label><br>
                     <a href="<?php echo $poster;?>">
                         <img src="<?php echo $poster; ?>" width=550px style= >
                     </a>
                 </br>
-                    <label> Permission Letter</label>
+                  <!--   <label> Permission Letter</label>
                     <a href="<?php echo $permission;?>">
                         <img src="<?php echo $permission; ?>" width=550px style= >
-                    </a>
+                    </a> -->
+                    <?php
+                        if ($comments)
+                        {
+                            echo "<label> <u>Comments:</u> </label>";
+                            echo "<h8 style=\"color:blue; text-align:center; margin-top:10px;\">" . $comments .  "</h8></br></br>";
+                        }  
+                    ?> 
                     <p> Verification status : <?php echo $processStatus; ?> </p>
+
                 </div>
                 </form>
             </div>
         
         </div>
         <div class="footer" style="margin-top:60px;">
-            <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+            <p style="margin-top: 7px;"></p>
         </div>
 
     

@@ -8,9 +8,11 @@ if (empty($_SESSION['memberId']))
 }
 
 
-$_SESSION['eventId'] = $_REQUEST['event'];
-$eventNumber = $_REQUEST['event'];
 
+$eventNumber = $_REQUEST['event'];
+$eventNumber = mysqli_real_escape_string($mysqli, $eventNumber);
+
+$_SESSION['eventId'] = $eventNumber;
 
 $sql = "SELECT * FROM event WHERE eventId='$eventNumber' ";
 $res = $mysqli->query($sql);
@@ -126,7 +128,7 @@ else if ($count == 0)
         
         </div>
         <div class="footer">
-            <p style="margin-top: 7px;">Developed and maintained by the Computer Society of India, VIT University Chapter</p>
+            <p style="margin-top: 7px;"></p>
         </div>
 
     <script type="text/ecmascript">
